@@ -7,5 +7,6 @@ import org.springframework.boot.runApplication
 class FraudDetectionEngineApplication
 
 fun main(args: Array<String>) {
+	val x = ""
 	runApplication<FraudDetectionEngineApplication>(*args)
 }
