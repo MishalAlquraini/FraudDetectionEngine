@@ -1,4 +1,4 @@
-package com.fraud.FraudDetectionEngine
+package com.fraud
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
