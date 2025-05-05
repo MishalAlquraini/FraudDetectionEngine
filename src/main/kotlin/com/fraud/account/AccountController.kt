@@ -1,4 +1,4 @@
-package com.fraud.Account
+package com.fraud.account
 
 class AccountController {
 }

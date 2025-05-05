@@ -1,6 +1,5 @@
-package com.fraud.User
+package com.fraud.user
 
-import com.sun.net.httpserver.Request
 import jakarta.inject.Named
 import org.springframework.web.bind.annotation.RequestBody
 import java.time.LocalDateTime

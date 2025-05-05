@@ -1,6 +1,6 @@
-package com.fraud.Account
+package com.fraud.account
 
-import com.fraud.User.UserEntity
+import com.fraud.user.UserEntity
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
@@ -24,7 +24,7 @@ data class AccountEntity (
     val userId: UserEntity? = null,
 
     val accountNumber: String,
-    val balance: BigDecimal,
+    var balance: BigDecimal,
     val isFrozen: Boolean,
     val isActive: Boolean,
     val createdAt: LocalDateTime

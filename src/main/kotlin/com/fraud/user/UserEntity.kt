@@ -1,4 +1,4 @@
-package com.fraud.User
+package com.fraud.user
 
 import jakarta.persistence.*
 import java.time.LocalDateTime

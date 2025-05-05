@@ -1,4 +1,4 @@
-package com.fraud.User
+package com.fraud.user
 
 
 data class RegisterUserRequest(

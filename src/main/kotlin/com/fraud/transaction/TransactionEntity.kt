@@ -1,7 +1,8 @@
-package com.fraud.Transaction
+package com.fraud.transaction
 
-import com.fraud.Account.AccountEntity
+import com.fraud.account.AccountEntity
 import jakarta.persistence.*
+import java.math.BigDecimal
 import java.time.LocalDateTime
 
 @Entity
@@ -19,7 +20,7 @@ data class TransactionEntity(
     @JoinColumn(name = "receiver_account_id", referencedColumnName = "id")
     val receiverAccount: AccountEntity,
 
-    val amount: Double,
+    val amount: BigDecimal,
 
     val timestamp: LocalDateTime = LocalDateTime.now(),
 
