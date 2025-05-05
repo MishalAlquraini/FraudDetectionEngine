@@ -1,8 +1,10 @@
 package com.fraud.account
 
 
+import com.fraud.User.UserEntity
 import com.fraud.User.UserRepository
 import jakarta.inject.Named
+import org.springframework.http.ResponseEntity
 import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.util.*
@@ -25,6 +27,15 @@ class AccountService(
             return "$bankCode$randomPart$serialPart"
         }
     }
+
+fun checkBalance(user: UserEntity): AccountBalance{
+    val account = accountRepository.findByUser(user) ?: AccountEntity()
+    return account.let { AccountBalance(
+        balance = it.balance
+    ) }
+
+}
+
 
     fun createAccount(userId: Long): Account {
         val user = userRepository.findById(userId).get()
@@ -62,4 +73,8 @@ data class Account(
     val isFrozen: Boolean,
     val isActive: Boolean,
     val createdAt: LocalDateTime
+)
+
+data class AccountBalance(
+    val balance: BigDecimal
 )

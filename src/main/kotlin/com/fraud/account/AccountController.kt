@@ -1,7 +1,9 @@
 package com.fraud.account
 
+import com.fraud.User.UserEntity
 import com.fraud.User.UserRepository
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RestController
 import java.security.Principal
@@ -14,10 +16,29 @@ class AccountController (
 
 ) {
 
+    @GetMapping("/accounts/v1/accounts")
+    fun getAccounts(principal: Principal){
+
+        TODO()
+//        val email = principal.name
+//        val user = userRepository.findByEmail(email) ?: UserEntity()
+//         accountsService.checkBalance(user)
+
+    }
+
+    @GetMapping("/accounts/balance")
+    fun checkBalance(principal: Principal):AccountBalance{
+        val email = principal.name
+        val user = userRepository.findByEmail(email)
+            ?: UserEntity()
+
+         return accountsService.checkBalance(user)
+
+    }
+
     @PostMapping("/accounts/v1/accounts")
     fun createAccount(principal: Principal) : ResponseEntity<*>{
 
-        print(principal)
         val email = principal.name
         val user = userRepository.findByEmail(email)
             ?: return ResponseEntity.badRequest().body("User not found")

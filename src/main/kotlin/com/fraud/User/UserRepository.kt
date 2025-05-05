@@ -7,5 +7,4 @@ import org.springframework.data.jpa.repository.JpaRepository
 @Named
 interface UserRepository : JpaRepository<UserEntity, Long>{
     fun findByEmail(email: String): UserEntity?
-    fun findByName(name: String): UserEntity?
 }
