@@ -21,7 +21,7 @@ data class AccountEntity (
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    val userId: UserEntity? = null,
+    val user: UserEntity? = null,
 
     val accountNumber: String,
     val balance: BigDecimal,
@@ -30,5 +30,5 @@ data class AccountEntity (
     val createdAt: LocalDateTime
 ){
     constructor() : this(null, null, "", BigDecimal.ZERO,
-        false, false, LocalDateTime.now())
+        false, true, LocalDateTime.now())
 }

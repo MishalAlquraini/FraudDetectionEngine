@@ -27,7 +27,7 @@ data class TransactionEntity(
 
     @Enumerated(EnumType.STRING)
     val status: TransactionStatus = TransactionStatus.PENDING,
-`
+
     val deviceId: String? = null,
 
     val ipAddress: String? = null,
