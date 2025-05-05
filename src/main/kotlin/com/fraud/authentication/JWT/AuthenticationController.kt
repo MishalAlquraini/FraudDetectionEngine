@@ -1,8 +1,9 @@
 package com.fraud.authentication.JWT
 
 import org.springframework.data.crossstore.ChangeSetPersister
-import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
+import org.springframework.security.authentication.*
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -19,17 +20,20 @@ class AuthenticationController(
 ) {
 
     @PostMapping("/login")
-    fun login(@RequestBody authRequest: AuthenticationRequest): AuthenticationResponse {
+    fun login(@RequestBody authRequest: AuthenticationRequest):  ResponseEntity<*>  {
         val authToken = UsernamePasswordAuthenticationToken(authRequest.email, authRequest.password)
-        val authentication = authenticationManager.authenticate(authToken)
-
-        if (authentication.isAuthenticated) {
-            val userDetails = userDetailsService.loadUserByUsername(authRequest.email)
-            val token = jwtService.generateToken(userDetails.username)
-            return AuthenticationResponse (token)
-        } else {
-            throw IllegalArgumentException("Invalid user request!")
+        try {
+            authenticationManager.authenticate(authToken)
+        } catch (e: BadCredentialsException) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password")
+        } catch (e: DisabledException) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User is disabled")
+        } catch (e: LockedException) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User is locked")
         }
+
+        val token = jwtService.generateToken(authRequest.email)
+        return ResponseEntity.ok(AuthenticationResponse(token))
     }
 }
 
