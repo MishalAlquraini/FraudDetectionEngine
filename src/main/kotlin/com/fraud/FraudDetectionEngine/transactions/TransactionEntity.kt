@@ -1,5 +1,6 @@
 package com.fraud.FraudDetectionEngine.transactions
 
+import com.fraud.Account.AccountEntity
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
