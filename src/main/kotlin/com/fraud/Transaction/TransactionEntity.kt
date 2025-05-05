@@ -1,4 +1,4 @@
-package com.fraud.FraudDetectionEngine.transactions
+package com.fraud.Transaction
 
 import com.fraud.Account.AccountEntity
 import jakarta.persistence.*
