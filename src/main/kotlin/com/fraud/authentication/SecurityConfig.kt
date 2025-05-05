@@ -32,20 +32,9 @@ class SecurityConf (
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http.csrf{ it.disable()}.authorizeHttpRequests {
-//            it.requestMatchers("/users/v1/list").permitAll()
-//                .anyRequest().authenticated()
-//            it.requestMatchers("/users/v1/create/menu").permitAll()
-//                .anyRequest().permitAll()
-//            it.requestMatchers("/Public/**").permitAll().requestMatchers("/users/v1/**")
-//                .authenticated()
-//        }
-//            .formLogin {
-//                it.defaultSuccessUrl("/Public/menu", true)}
-//            .userDetailsService(userDetailsService)
-//        return http.build()
             it
                 .requestMatchers("/auth/**").permitAll()
-                .requestMatchers("/register").permitAll()
+                .requestMatchers("/users/register").permitAll()
 
                 .anyRequest().authenticated()
         }
