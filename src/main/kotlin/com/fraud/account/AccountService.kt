@@ -1,4 +1,4 @@
-package com.fraud.Account
+package com.fraud.account
 
 
 import com.fraud.User.UserRepository
@@ -14,6 +14,17 @@ class AccountService(
     private val userRepository: UserRepository
 ) {
 
+    object AccountNumberGenerator {
+        private var serial = 1
+
+        fun generate(): String {
+            val bankCode = "12045"
+            val randomPart = (100..999).random().toString()
+            val serialPart = serial.toString().padStart(1, '0')
+            serial += 1
+            return "$bankCode$randomPart$serialPart"
+        }
+    }
 
     fun createAccount(userId: Long): Account {
         val user = userRepository.findById(userId).get()
@@ -23,7 +34,8 @@ class AccountService(
             balance = BigDecimal.ZERO,
             isFrozen = false,
             isActive = true,
-            accountNumber = UUID.randomUUID().toString(),
+//            accountNumber = (100_000_000..999_999_999).random().toString(),
+            accountNumber = AccountNumberGenerator.generate(),
             createdAt = LocalDateTime.now())
 
 

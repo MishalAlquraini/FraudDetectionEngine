@@ -1,4 +1,4 @@
-package com.fraud.Account
+package com.fraud.account
 
 import jakarta.inject.Named
 import org.springframework.data.jpa.repository.JpaRepository

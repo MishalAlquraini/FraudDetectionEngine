@@ -1,4 +1,4 @@
-package com.fraud.Account
+package com.fraud.account
 
 import com.fraud.User.UserEntity
 import jakarta.persistence.Entity
