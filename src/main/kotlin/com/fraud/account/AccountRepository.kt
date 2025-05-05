@@ -1,7 +1,8 @@
 package com.fraud.account
 
-import jakarta.inject.Named
 import org.springframework.data.jpa.repository.JpaRepository
 
-@Named
-interface AccountRepository : JpaRepository<AccountEntity, Long>
+
+interface AccountRepository : JpaRepository<AccountEntity, Long> {
+    fun findByAccountNumber(accountNumber: String): AccountEntity?
+}
