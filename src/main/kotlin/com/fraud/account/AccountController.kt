@@ -4,6 +4,7 @@ import com.fraud.User.UserEntity
 import com.fraud.User.UserRepository
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RestController
 import java.security.Principal
@@ -26,13 +27,13 @@ class AccountController (
 
     }
 
-    @GetMapping("/accounts/balance")
-    fun checkBalance(principal: Principal):AccountBalance{
+    @GetMapping("/accounts/{accountNumber}/balance")
+    fun checkBalance(principal: Principal, @PathVariable accountNumber:String):AccountBalance{
         val email = principal.name
         val user = userRepository.findByEmail(email)
             ?: UserEntity()
 
-         return accountsService.checkBalance(user)
+         return accountsService.checkBalance(user,accountNumber)
 
     }
 

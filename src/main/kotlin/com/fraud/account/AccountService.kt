@@ -28,9 +28,10 @@ class AccountService(
         }
     }
 
-fun checkBalance(user: UserEntity): AccountBalance{
-    val account = accountRepository.findByUser(user) ?: AccountEntity()
+fun checkBalance(user: UserEntity, accountNumber: String): AccountBalance{
+    val account = accountRepository.findByAccountNumber(accountNumber) ?: AccountEntity()
     return account.let { AccountBalance(
+        accountNumber= it.accountNumber,
         balance = it.balance
     ) }
 
@@ -76,5 +77,6 @@ data class Account(
 )
 
 data class AccountBalance(
+    val accountNumber: String,
     val balance: BigDecimal
 )
