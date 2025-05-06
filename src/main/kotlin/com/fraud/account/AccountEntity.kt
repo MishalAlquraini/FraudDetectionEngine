@@ -26,7 +26,7 @@ data class AccountEntity (
     val accountNumber: String,
     var balance: BigDecimal,
     val isFrozen: Boolean,
-    val isActive: Boolean,
+    var isActive: Boolean,
     val createdAt: LocalDateTime
 ){
     constructor() : this(null, null, "", BigDecimal.ZERO,

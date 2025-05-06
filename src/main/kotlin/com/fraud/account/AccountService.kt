@@ -70,6 +70,14 @@ fun checkBalance(user: UserEntity, accountNumber: String): AccountBalance{
         }
 
     }
+
+
+    fun deactivateAccount(accountNumber: String):ResponseEntity<*>{
+        val foundAccount = accountRepository.findByAccountNumber(accountNumber)?: throw IllegalArgumentException("Account not found")
+        foundAccount.isActive =false
+        accountRepository.save(foundAccount)
+        return ResponseEntity.ok("Account deactivated successfully")
+    }
 }
 
 
