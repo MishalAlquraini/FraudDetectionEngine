@@ -23,7 +23,7 @@ class UserService(
            name = request.name,
            email = request.email,
            password = hashedPassword,
-           role = Roles.USER,
+           role = Roles.ROLE_USER,
            created_at = LocalDateTime.now()
        )
        userRepository.save(newUser)

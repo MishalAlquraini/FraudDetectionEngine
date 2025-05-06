@@ -4,7 +4,9 @@ package com.fraud.account
 import com.fraud.User.UserEntity
 import com.fraud.User.UserRepository
 import jakarta.inject.Named
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.ResponseStatus
 import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.util.*
@@ -37,10 +39,16 @@ class AccountService(
     }
 fun checkBalance(user: UserEntity, accountNumber: String): AccountBalance{
     val account = accountRepository.findByAccountNumber(accountNumber) ?: AccountEntity()
-    return account.let { AccountBalance(
-        accountNumber= it.accountNumber,
-        balance = it.balance
-    ) }
+    if (user.id != account.user?.id) {
+        throw unauthorizedException()
+    }
+        return account.let {
+            AccountBalance(
+                accountNumber = it.accountNumber,
+                balance = it.balance
+            )
+        }
+
 
 }
 
@@ -98,3 +106,6 @@ data class AccountBalance(
     val accountNumber: String,
     val balance: BigDecimal
 )
+
+@ResponseStatus(HttpStatus.UNAUTHORIZED)
+class unauthorizedException(message: String = "You are not authorized to access this account") : RuntimeException(message)

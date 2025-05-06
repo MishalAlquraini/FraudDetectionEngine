@@ -1,6 +1,7 @@
 package com.fraud.authentication.JWT
 
 import com.fraud.User.UserRepository
+import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.security.Keys
@@ -39,6 +40,14 @@ class JwtService(
             .parseClaimsJws(token)
             .body
             .subject
+
+    fun extractAllClaims(token: String): Claims {
+        return Jwts.parserBuilder()
+            .setSigningKey(secretKey)
+            .build()
+            .parseClaimsJws(token)
+            .body
+    }
 
     fun isTokenValid(token: String, email: String): Boolean {
         return try {
