@@ -24,7 +24,7 @@ data class AccountEntity (
     val user: UserEntity? = null,
 
     val accountNumber: String,
-    val balance: BigDecimal,
+    var balance: BigDecimal,
     val isFrozen: Boolean,
     val isActive: Boolean,
     val createdAt: LocalDateTime

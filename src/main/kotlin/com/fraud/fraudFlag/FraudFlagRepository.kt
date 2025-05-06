@@ -1,2 +1,2 @@
-package com.fraud.FraudDetectionEngine.fraudFlag
+package com.fraud.fraudFlag
 

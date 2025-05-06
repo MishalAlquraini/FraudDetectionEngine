@@ -1,6 +1,6 @@
-package com.fraud.FraudDetectionEngine.fraudFlag
+package com.fraud.fraudFlag
 
-import com.fraud.FraudDetectionEngine.transactions.TransactionEntity
+import com.fraud.Transaction.TransactionEntity
 import jakarta.persistence.*
 import java.time.LocalDateTime
 

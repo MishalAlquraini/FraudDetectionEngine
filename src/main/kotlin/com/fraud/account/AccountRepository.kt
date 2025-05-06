@@ -10,3 +10,4 @@ interface AccountRepository : JpaRepository<AccountEntity, Long>{
     fun findByAccountNumber(accountNumber: String): AccountEntity?
 
 }
+
