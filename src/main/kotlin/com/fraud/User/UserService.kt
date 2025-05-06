@@ -17,10 +17,12 @@ class UserService(
        if (request.password.length < MIN_CHAR){
            throw IllegalArgumentException("Password must be at least $MIN_CHAR characters")
        }
+       val hashedPassword = passwordEncoder.encode(request.password)
+
        val newUser = UserEntity(
            name = request.name,
            email = request.email,
-           password = passwordEncoder.encode(request.password),
+           password = hashedPassword,
            role = Roles.USER,
            created_at = LocalDateTime.now()
        )

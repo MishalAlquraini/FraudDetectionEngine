@@ -1,4 +1,4 @@
-package com.fraud.Account
+package com.fraud.account
 
 import com.fraud.User.UserEntity
 import jakarta.persistence.Entity
@@ -21,14 +21,14 @@ data class AccountEntity (
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    val userId: UserEntity? = null,
+    val user: UserEntity? = null,
 
     val accountNumber: String,
-    val balance: BigDecimal,
+    var balance: BigDecimal,
     val isFrozen: Boolean,
-    val isActive: Boolean,
+    var isActive: Boolean,
     val createdAt: LocalDateTime
 ){
     constructor() : this(null, null, "", BigDecimal.ZERO,
-        false, false, LocalDateTime.now())
+        false, true, LocalDateTime.now())
 }
