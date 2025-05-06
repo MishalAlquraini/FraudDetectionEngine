@@ -45,7 +45,7 @@ class SecurityConf (
 //        return http.build()
             it
                 .requestMatchers("/auth/**").permitAll()
-                .requestMatchers("/register").permitAll()
+                .requestMatchers("/users/register").permitAll()
 
                 .anyRequest().authenticated()
         }
