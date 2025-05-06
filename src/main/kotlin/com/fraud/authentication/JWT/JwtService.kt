@@ -17,7 +17,7 @@ class JwtService(
 
     private val secretKey: SecretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256)
     private val expirationMs: Long = 1000 * 60 * 60
-    //user: UserDetails,
+
     fun generateToken(email : String): String {
         val now = Date()
         val user = userRepository.findByEmail(email) ?: throw IllegalArgumentException("User not found ...")
