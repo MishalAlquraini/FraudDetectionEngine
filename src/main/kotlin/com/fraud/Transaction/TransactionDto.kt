@@ -1,9 +1,11 @@
 package com.fraud.Transaction
 
+import java.math.BigDecimal
+
 data class TransferDto(
-    val senderAccountId: Long,
-    val receiverAccountId: Long,
-    val amount: Double,
+    val senderAccountId: String,
+    val receiverAccountId: String,
+    val amount: BigDecimal,
     val location: String?,
     val deviceId: String?,
     val ipAddress: String?
