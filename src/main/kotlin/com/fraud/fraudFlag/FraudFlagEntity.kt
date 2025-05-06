@@ -1,6 +1,6 @@
 package com.fraud.fraudFlag
 
-import com.fraud.Transaction.TransactionEntity
+import com.fraud.transaction.TransactionEntity
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
