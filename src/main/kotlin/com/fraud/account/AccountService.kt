@@ -27,7 +27,14 @@ class AccountService(
             return "$bankCode$randomPart$serialPart"
         }
     }
+    fun listAccounts(user: UserEntity): List<AccountBalance>{
+        val account = accountRepository.findAllByUser(user) ?: emptyList()
+        return account.map { AccountBalance(
+            accountNumber = it.accountNumber,
+            balance = it.balance
+        ) }
 
+    }
 fun checkBalance(user: UserEntity, accountNumber: String): AccountBalance{
     val account = accountRepository.findByAccountNumber(accountNumber) ?: AccountEntity()
     return account.let { AccountBalance(

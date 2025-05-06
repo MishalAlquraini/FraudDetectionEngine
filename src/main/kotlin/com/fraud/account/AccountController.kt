@@ -17,16 +17,17 @@ class AccountController (
 
 ) {
 
+    // GET list of accounts for user
     @GetMapping("/accounts/v1/accounts")
-    fun getAccounts(principal: Principal){
+    fun getAccounts(principal: Principal):List<AccountBalance>{
 
-        TODO()
-//        val email = principal.name
-//        val user = userRepository.findByEmail(email) ?: UserEntity()
-//         accountsService.checkBalance(user)
+        val email = principal.name
+        val user = userRepository.findByEmail(email) ?: UserEntity()
+       return accountsService.listAccounts(user)
 
     }
 
+    // GET balance of a specific accounts for user
     @GetMapping("/accounts/{accountNumber}/balance")
     fun checkBalance(principal: Principal, @PathVariable accountNumber:String):AccountBalance{
         val email = principal.name
@@ -37,6 +38,8 @@ class AccountController (
 
     }
 
+
+    // Create a new account for user
     @PostMapping("/accounts/v1/accounts")
     fun createAccount(principal: Principal) : ResponseEntity<*>{
 

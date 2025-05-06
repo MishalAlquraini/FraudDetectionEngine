@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 @Named
 interface AccountRepository : JpaRepository<AccountEntity, Long>{
-    fun findByUser(user: UserEntity): AccountEntity?
+    fun findAllByUser(user: UserEntity): List<AccountEntity>?
     fun findByAccountNumber(accountNumber: String): AccountEntity?
 
 }
