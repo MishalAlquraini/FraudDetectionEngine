@@ -19,8 +19,8 @@ class TransactionController(
         }
 
     @GetMapping("/transactions")
-    fun getTransactions(@RequestParam accountId: Long?): ResponseEntity<Any> {
-        if (accountId == null || accountId <= 0) {
+    fun getTransactions(@RequestParam accountId: String?): ResponseEntity<Any> {
+        if (accountId == null) {
             return ResponseEntity.badRequest().body("Invalid accountId. It must be a positive number.")
         }
         val transactions = transactionService.getTransactionsByAccountId(accountId)

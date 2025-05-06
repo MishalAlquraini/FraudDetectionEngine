@@ -48,9 +48,9 @@ class TransactionService(
         return ResponseEntity.ok("Transaction Successful")
     }
 
-    fun getTransactionsByAccountId(accountId: Long): ResponseEntity<List<TransactionEntity>> {
-        val transactions = transactionRepository
-            .findBySenderAccountIdOrReceiverAccountId(accountId, accountId)
+    fun getTransactionsByAccountId(accountId: String): ResponseEntity<List<TransactionEntity>> {
+        val transactions = transactionRepository.findBySenderAccountAccountNumberOrReceiverAccountAccountNumber (
+            accountId, accountId)
         return ResponseEntity.ok(transactions)
     }
 
