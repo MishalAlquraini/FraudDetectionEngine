@@ -27,4 +27,5 @@ class UserService(
        userRepository.save(newUser)
        return "User registered successfully"
    }
+
 }
