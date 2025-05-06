@@ -4,6 +4,7 @@ import com.fraud.User.UserEntity
 import com.fraud.User.UserRepository
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RestController
@@ -53,5 +54,11 @@ class AccountController (
         return ResponseEntity.ok("Account created successfully")
 
         }
+
+
+    //Deactivate account for user
+    @PatchMapping("/accounts/{accountNumber}/activate-toggle")
+    fun closeAccount (@PathVariable accountNumber: String): ResponseEntity<*> =  accountsService.deactivateAccount(accountNumber)
+
 }
 
