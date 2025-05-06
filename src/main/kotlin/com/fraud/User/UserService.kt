@@ -12,7 +12,6 @@ const val MIN_CHAR = 6
 class UserService(
     private val userRepository: UserRepository,
     private val passwordEncoder: PasswordEncoder
-
 ){
    fun registerUser(@RequestBody request: RegisterUserRequest ): Any{
        if (request.password.length < MIN_CHAR){
@@ -24,10 +23,11 @@ class UserService(
            name = request.name,
            email = request.email,
            password = hashedPassword,
-           role = Roles.USER,
+           role = Roles.ROLE_USER,
            created_at = LocalDateTime.now()
        )
        userRepository.save(newUser)
        return "User registered successfully"
    }
+
 }

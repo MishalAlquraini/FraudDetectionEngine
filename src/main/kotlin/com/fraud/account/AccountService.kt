@@ -1,8 +1,12 @@
 package com.fraud.account
 
 
+import com.fraud.User.UserEntity
 import com.fraud.User.UserRepository
 import jakarta.inject.Named
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.ResponseStatus
 import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.util.*
@@ -25,6 +29,29 @@ class AccountService(
             return "$bankCode$randomPart$serialPart"
         }
     }
+    fun listAccounts(user: UserEntity): List<AccountBalance>{
+        val account = accountRepository.findAllByUser(user) ?: emptyList()
+        return account.map { AccountBalance(
+            accountNumber = it.accountNumber,
+            balance = it.balance
+        ) }
+
+    }
+fun checkBalance(user: UserEntity, accountNumber: String): AccountBalance{
+    val account = accountRepository.findByAccountNumber(accountNumber) ?: AccountEntity()
+    if (user.id != account.user?.id) {
+        throw unauthorizedException()
+    }
+        return account.let {
+            AccountBalance(
+                accountNumber = it.accountNumber,
+                balance = it.balance
+            )
+        }
+
+
+}
+
 
     fun createAccount(userId: Long): Account {
         val user = userRepository.findById(userId).get()
@@ -51,6 +78,17 @@ class AccountService(
         }
 
     }
+
+
+    fun deactivateAccount(accountNumber: String):ResponseEntity<*>{
+        val foundAccount = accountRepository.findByAccountNumber(accountNumber)?: throw IllegalArgumentException("Account not found")
+        foundAccount.isActive = !foundAccount.isActive
+        accountRepository.save(foundAccount)
+
+        return if (foundAccount.isActive)
+            ResponseEntity.ok("Account activated successfully")
+        else
+            ResponseEntity.ok("Account deactivated successfully")    }
 }
 
 
@@ -63,3 +101,11 @@ data class Account(
     val isActive: Boolean,
     val createdAt: LocalDateTime
 )
+
+data class AccountBalance(
+    val accountNumber: String,
+    val balance: BigDecimal
+)
+
+@ResponseStatus(HttpStatus.UNAUTHORIZED)
+class unauthorizedException(message: String = "You are not authorized to access this account") : RuntimeException(message)
