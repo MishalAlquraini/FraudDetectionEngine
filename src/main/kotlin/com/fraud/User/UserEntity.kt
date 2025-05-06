@@ -21,8 +21,6 @@ data class UserEntity (
     constructor() : this(null, "", "", "",
         LocalDateTime.now(), Roles.USER)
 }
-
-
 enum class Roles {
     USER, ADMIN
 }
