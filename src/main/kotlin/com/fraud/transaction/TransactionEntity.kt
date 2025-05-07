@@ -1,4 +1,4 @@
-package com.fraud.Transaction
+package com.fraud.transaction
 
 import com.fraud.account.AccountEntity
 import jakarta.persistence.*
@@ -13,14 +13,14 @@ data class TransactionEntity(
     val id: Long? = null,
 
     @ManyToOne
-    @JoinColumn(name = "sender_account_id", referencedColumnName = "id")
-    val senderAccount: AccountEntity,
+    @JoinColumn(name = "sender_account_number", referencedColumnName = "accountNumber")
+    val senderAccount: AccountEntity? = null,
 
     @ManyToOne
-    @JoinColumn(name = "receiver_account_id", referencedColumnName = "id")
-    val receiverAccount: AccountEntity,
+    @JoinColumn(name = "receiver_account_number", referencedColumnName = "accountNumber")
+    val receiverAccount: AccountEntity? = null,
 
-    val amount: BigDecimal,
+    val amount: BigDecimal= BigDecimal.ZERO,
 
     val timestamp: LocalDateTime = LocalDateTime.now(),
 
@@ -35,10 +35,11 @@ data class TransactionEntity(
 
     val isFlagged: Boolean = false,
 
-    val deposit: Boolean? = null,
+    val isDeposit: Boolean? = null,
 
-    val withdrawal: Boolean? = null
+    val isWithdrawal: Boolean? = null
 )
+
 
 enum class TransactionStatus {
     SUCCESS, PENDING

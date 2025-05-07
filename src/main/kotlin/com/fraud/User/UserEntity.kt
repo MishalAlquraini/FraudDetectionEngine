@@ -19,8 +19,8 @@ data class UserEntity (
     val role: Roles
 ){
     constructor() : this(null, "", "", "",
-        LocalDateTime.now(), Roles.USER)
+        LocalDateTime.now(), Roles.ROLE_USER)
 }
 enum class Roles {
-    USER, ADMIN
+    ROLE_USER, ROLE_ADMIN
 }
