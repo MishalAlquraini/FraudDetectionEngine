@@ -1,8 +1,6 @@
 package com.fraud.transaction
 
-import com.fraud.Transaction.TransactionEntity
 import com.fraud.Transaction.TransactionService
-import com.fraud.Transaction.TransferDto
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 

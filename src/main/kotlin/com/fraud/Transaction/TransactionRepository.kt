@@ -1,6 +1,7 @@
 package com.fraud.Transaction
 
 
+import com.fraud.transaction.TransactionEntity
 import jakarta.inject.Named
 import org.springframework.data.jpa.repository.JpaRepository
 

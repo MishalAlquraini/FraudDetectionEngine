@@ -1,7 +1,7 @@
 package com.fraud.Admin
 
-import com.fraud.Transaction.TransactionEntity
-import com.fraud.Transaction.TransferDto
+import com.fraud.transaction.TransactionEntity
+import com.fraud.transaction.TransferDto
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/admin")
+//@RequestMapping("/admin")
 class AdminController(
     private val adminService: AdminService
 ) {
-
-    @PreAuthorize("hasRole('ADMIN')")
+    //better switch to getmapping abd add the input in the url
+    //@PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/admin/transactions")
-    fun listAllTransactions(@RequestBody request: TransferDto): List<TransactionEntity?> {
+    fun listAllTransactions(@RequestBody request: TransactionFilter): List<TransactionEntity?> {
 
         return adminService.listAllTransactions(request)
     }
