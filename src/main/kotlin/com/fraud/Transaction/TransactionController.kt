@@ -1,6 +1,6 @@
 package com.fraud.transaction
 
-import com.fraud.Transaction.TransactionService
+import com.fraud.transaction.TransactionService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
