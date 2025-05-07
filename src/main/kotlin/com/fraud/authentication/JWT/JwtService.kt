@@ -25,7 +25,7 @@ class JwtService(
         val expiry = Date(now.time + expirationMs)
 
         return Jwts.builder()
-            .claim("roles",user.role)
+            //.claim("roles",user.role)
             .setSubject(email)
             .setIssuedAt(now)
             .setExpiration(expiry)
