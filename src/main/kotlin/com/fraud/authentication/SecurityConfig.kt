@@ -36,7 +36,7 @@ class SecurityConf (
         http.csrf{ it.disable()}.authorizeHttpRequests {
             it
                 .requestMatchers("/auth/**").permitAll()
-                .requestMatchers("/admin/**").permitAll() //.hasRole("ADMIN")
+                .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/users/register").permitAll()
 
                 .anyRequest().authenticated()

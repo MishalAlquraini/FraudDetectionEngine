@@ -4,6 +4,7 @@ package com.fraud.Admin
 import com.fraud.Transaction.TransactionRepository
 import com.fraud.transaction.TransactionEntity
 import com.fraud.account.AccountRepository
+import com.fraud.fraudFlag.FinalStatus
 import jakarta.inject.Named
 import java.math.BigDecimal
 import com.fraud.transaction.TransferDto
@@ -13,6 +14,7 @@ import com.fraud.transaction.TransferDto
 class AdminService (
     private val transactionRepository: TransactionRepository,
     private val accountRepository: AccountRepository,
+//    private val fraudFlagRepository:FraudFlagRepository
     ) {
 
     fun listAllTransactions(request: TransactionFilter
@@ -20,7 +22,7 @@ class AdminService (
         val transaction = transactionRepository.findBySenderAccountAccountNumberOrReceiverAccountAccountNumber(
             request.accountId,
             request.accountId
-        ).filter { it.isFlagged == true}
+        ).filter { it.isFlagged }
 
 
         return transaction
@@ -39,6 +41,13 @@ class AdminService (
         }
 
     }
+
+//    fun reviewFlag(transactionId:String){
+//        val foundFlag = fraudFlagRepository.findByTransactionId(transactionId)
+//        foundFlag.reviewedByAdmin = true
+//        foundFlag.finalStatus = FinalStatus.TRUE
+//        fraudFlagRepository.save(foundFlag)
+//    }
 }
 
 data class AccountData(
