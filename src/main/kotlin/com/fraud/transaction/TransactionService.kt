@@ -1,6 +1,7 @@
 package com.fraud.transaction
 
 import com.fraud.account.AccountRepository
+import com.fraud.fraudFlag.FraudFlagService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
@@ -10,7 +11,8 @@ import java.time.LocalDateTime
 @Service
 class TransactionService(
     private val transactionRepository: TransactionRepository,
-    private val accountRepository: AccountRepository
+    private val accountRepository: AccountRepository,
+    private val fraudFlagService: FraudFlagService
 ) {
     fun transfer(request: TransferDto): ResponseEntity<String> {
         val sender = accountRepository.findByAccountNumber(request.senderAccountId)
@@ -44,6 +46,7 @@ class TransactionService(
             isFlagged = false
         )
         transactionRepository.save(transaction)
+        fraudFlagService.evaluateTransaction(transaction)
 
         return ResponseEntity.ok("Transaction Successful")
     }
@@ -82,6 +85,7 @@ class TransactionService(
         )
 
         transactionRepository.save(transaction)
+        fraudFlagService.evaluateTransaction(transaction)
 
         return ResponseEntity.ok("Deposit successful")
     }
@@ -116,6 +120,7 @@ class TransactionService(
         )
 
         transactionRepository.save(transaction)
+        fraudFlagService.evaluateTransaction(transaction)
 
         return ResponseEntity.ok("Withdrawal successful")
     }
