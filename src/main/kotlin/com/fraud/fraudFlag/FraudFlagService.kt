@@ -14,6 +14,22 @@ class FraudFlagService(
     private val accountRepository: AccountRepository
 ) {
 
+    fun reviewFlag(id:Long):ReviewFlagResponse{
+        val flag = fraudFlagRepository.findById(id).orElseThrow {
+            IllegalArgumentException("Fraud flag with ID $id not found")
+        }
+
+        val updatedFlag = flag.copy(reviewedByAdmin = true)
+        fraudFlagRepository.save(updatedFlag)
+
+        return ReviewFlagResponse(
+            transactionId = updatedFlag.transaction.id ?: 0L,
+            reviewed = true,
+            severity = updatedFlag.severity,
+            message = "Flag reviewed successfully"
+        )
+    }
+
     fun evaluateTransaction(transaction: TransactionEntity) : Boolean {
         val reasons = mutableListOf<String>()
         var severity = SeverityLevel.LOW
@@ -91,3 +107,11 @@ class FraudFlagService(
 
     }
 }
+
+
+data class ReviewFlagResponse(
+    val transactionId: Long,
+    val reviewed: Boolean,
+    val severity: SeverityLevel,
+    val message: String
+)

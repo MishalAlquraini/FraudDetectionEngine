@@ -16,8 +16,8 @@ class TransactionController(
         return transactionService.transfer(request)
         }
 
-    @GetMapping("/transactions")
-    fun getTransactions(@RequestParam accountNumber: String?): ResponseEntity<Any> {
+    @GetMapping("/transactions/{accountNumber}")
+    fun getTransactions(@PathVariable accountNumber: String?): ResponseEntity<Any> {
         if (accountNumber.isNullOrBlank()) {
             return ResponseEntity.badRequest().body("Invalid account number. It must be a non-empty string.")
         }

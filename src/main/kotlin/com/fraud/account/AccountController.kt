@@ -63,9 +63,7 @@ class AccountController (
         }
 
 
-    //Deactivate account for user
-    @PatchMapping("/accounts/{accountNumber}/activate-toggle")
-    fun closeAccount (@PathVariable accountNumber: String): ResponseEntity<*> =  accountsService.deactivateAccount(accountNumber)
+
 
 }
 
