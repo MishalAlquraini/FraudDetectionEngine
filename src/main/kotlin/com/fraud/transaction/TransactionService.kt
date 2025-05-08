@@ -50,7 +50,10 @@ class TransactionService(
             accountRepository.save(receiver)
         }
 
-        return ResponseEntity.ok("Transaction Successful")
+        if (apoorved) {
+            return ResponseEntity.ok("Transaction Successful")
+        }
+        return ResponseEntity.ok("Transaction is Marked for Admin Review")
     }
 
     fun getTransactionsByAccountNumber(accountNumber: String): ResponseEntity<Any> {
@@ -88,9 +91,6 @@ class TransactionService(
             account.balance += request.amount
             accountRepository.save(account)
         }
-
-
-
         return ResponseEntity.ok("Deposit successful")
     }
 

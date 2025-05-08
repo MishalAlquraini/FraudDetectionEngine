@@ -5,6 +5,7 @@ import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.security.Keys
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Component
 import java.util.Date
@@ -13,10 +14,13 @@ import javax.crypto.SecretKey
 
 @Component
 class JwtService(
+    @Value("\${SECRET-KEY:fraud-detection#4444ee4444%^&555ff}")
+    private val secretKeyString: String,
     private val userRepository: UserRepository
 ) {
 
-    private val secretKey: SecretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256)
+    private val secretKey: SecretKey = Keys.hmacShaKeyFor(secretKeyString.encodeToByteArray())
+    //private val secretKey: SecretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256)
     private val expirationMs: Long = 1000 * 60 * 60
 
     fun generateToken(email : String): String {

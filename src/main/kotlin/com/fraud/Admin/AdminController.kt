@@ -17,9 +17,9 @@ class AdminController(
     //better switch to getmapping abd add the input in the url
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/admin/transactions")
-    fun listAllTransactions(@RequestBody request: TransactionFilter): List<TransactionEntity?> {
+    fun showFlaggedTransactions(@RequestBody request: TransactionFilter): List<TransactionEntity?> {
 
-        return adminService.listAllTransactions(request)
+        return adminService.listFlaggedTransactions(request)
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -27,5 +27,7 @@ class AdminController(
     fun getAccounts() :List<AccountData>{
     return adminService.getAccounts()
     }
+
+
 
 }
