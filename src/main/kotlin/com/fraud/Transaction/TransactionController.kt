@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/transaction")
 class TransactionController(
-    private val transactionService: TransactionService
+    private val transactionService: TransactionService,
 ) {
 
     @PostMapping
@@ -17,12 +17,29 @@ class TransactionController(
         }
 
     @GetMapping("/transactions")
-    fun getTransactions(@RequestParam accountId: String?): ResponseEntity<Any> {
-        if (accountId == null) {
-            return ResponseEntity.badRequest().body("Invalid accountId. It must be a positive number.")
+    fun getTransactions(@RequestParam accountNumber: String?): ResponseEntity<Any> {
+        if (accountNumber.isNullOrBlank()) {
+            return ResponseEntity.badRequest().body("Invalid account number. It must be a non-empty string.")
         }
-        val transactions = transactionService.getTransactionsByAccountId(accountId)
-        return ResponseEntity.ok(transactions)
+        return transactionService.getTransactionsByAccountNumber(accountNumber)
     }
+
+
+    @PostMapping("/deposit/{accountNumber}")
+    fun deposit(
+        @PathVariable accountNumber: String,
+        @RequestBody request: DepositWithdrawDto
+    ): ResponseEntity<String> {
+        return transactionService.deposit(accountNumber, request)
+    }
+
+    @PostMapping("/withdraw/{accountNumber}")
+    fun withdraw(
+        @PathVariable accountNumber: String,
+        @RequestBody request: DepositWithdrawDto
+    ): ResponseEntity<String> {
+        return transactionService.withdraw(accountNumber, request)
+    }
+
     }
 

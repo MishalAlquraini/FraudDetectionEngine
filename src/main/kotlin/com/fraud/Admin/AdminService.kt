@@ -1,7 +1,7 @@
 package com.fraud.Admin
 
 
-import com.fraud.Transaction.TransactionRepository
+import com.fraud.transaction.TransactionRepository
 import com.fraud.transaction.TransactionEntity
 import com.fraud.account.AccountRepository
 import jakarta.inject.Named
