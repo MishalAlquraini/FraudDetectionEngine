@@ -68,8 +68,6 @@ class FraudFlagService(
             val flaggedTransaction = transaction.copy(isFlagged = true, status = TransactionStatus.PENDING)
             if (status == TransactionStatus.SUCCESS && (freeze != false)){
                 transactionRepository.save(flaggedTransaction)
-            }else{
-                flaggedTransaction
             }
 
             val flag = FraudFlagEntity(
