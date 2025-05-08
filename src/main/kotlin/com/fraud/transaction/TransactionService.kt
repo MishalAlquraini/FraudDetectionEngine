@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
+import kotlin.plus
 
 
 @Service
@@ -28,12 +29,6 @@ class TransactionService(
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Insufficient balance")
         }
 
-        sender.balance -= request.amount
-        receiver.balance += request.amount
-
-        accountRepository.save(sender)
-        accountRepository.save(receiver)
-
         val transaction = TransactionEntity(
             senderAccount = sender,
             receiverAccount = receiver,
@@ -46,7 +41,14 @@ class TransactionService(
             isFlagged = false
         )
         transactionRepository.save(transaction)
-        fraudFlagService.evaluateTransaction(transaction)
+        val apoorved = fraudFlagService.evaluateTransaction(transaction)
+        if (apoorved) {
+            sender.balance -= request.amount
+            receiver.balance += request.amount
+
+            accountRepository.save(sender)
+            accountRepository.save(receiver)
+        }
 
         return ResponseEntity.ok("Transaction Successful")
     }
@@ -66,10 +68,6 @@ class TransactionService(
         if (account.isFrozen) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Account is frozen")
         }
-
-        account.balance += request.amount
-        accountRepository.save(account)
-
         val transaction = TransactionEntity(
             senderAccount = null,
             receiverAccount = account,
@@ -85,7 +83,13 @@ class TransactionService(
         )
 
         transactionRepository.save(transaction)
-        fraudFlagService.evaluateTransaction(transaction)
+        val apoorved = fraudFlagService.evaluateTransaction(transaction)
+        if (apoorved) {
+            account.balance += request.amount
+            accountRepository.save(account)
+        }
+
+
 
         return ResponseEntity.ok("Deposit successful")
     }
@@ -120,7 +124,11 @@ class TransactionService(
         )
 
         transactionRepository.save(transaction)
-        fraudFlagService.evaluateTransaction(transaction)
+        val apoorved = fraudFlagService.evaluateTransaction(transaction)
+        if (apoorved) {
+            account.balance -= request.amount
+            accountRepository.save(account)
+        }
 
         return ResponseEntity.ok("Withdrawal successful")
     }
