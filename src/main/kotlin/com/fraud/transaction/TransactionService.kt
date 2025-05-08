@@ -1,19 +1,19 @@
-package com.fraud.transaction
+package com.fraud.Transaction
 
 import com.fraud.account.AccountRepository
-import com.fraud.fraudFlag.FraudFlagService
+import com.fraud.transaction.TransactionEntity
+import com.fraud.transaction.TransactionStatus
+import com.fraud.transaction.TransferDto
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
-import kotlin.plus
 
 
 @Service
 class TransactionService(
     private val transactionRepository: TransactionRepository,
-    private val accountRepository: AccountRepository,
-    private val fraudFlagService: FraudFlagService
+    private val accountRepository: AccountRepository
 ) {
     fun transfer(request: TransferDto): ResponseEntity<String> {
         val sender = accountRepository.findByAccountNumber(request.senderAccountId)
@@ -29,6 +29,12 @@ class TransactionService(
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Insufficient balance")
         }
 
+        sender.balance -= request.amount
+        receiver.balance += request.amount
+
+        accountRepository.save(sender)
+        accountRepository.save(receiver)
+
         val transaction = TransactionEntity(
             senderAccount = sender,
             receiverAccount = receiver,
@@ -41,96 +47,14 @@ class TransactionService(
             isFlagged = false
         )
         transactionRepository.save(transaction)
-        val apoorved = fraudFlagService.evaluateTransaction(transaction)
-        if (apoorved) {
-            sender.balance -= request.amount
-            receiver.balance += request.amount
-
-            accountRepository.save(sender)
-            accountRepository.save(receiver)
-        }
 
         return ResponseEntity.ok("Transaction Successful")
     }
 
-    fun getTransactionsByAccountNumber(accountNumber: String): ResponseEntity<Any> {
-        val transactions = transactionRepository
-            .findBySenderAccountAccountNumberOrReceiverAccountAccountNumber(accountNumber, accountNumber)
-
+    fun getTransactionsByAccountId(accountId: String): ResponseEntity<List<TransactionEntity>> {
+        val transactions = transactionRepository.findBySenderAccountAccountNumberOrReceiverAccountAccountNumber (
+            accountId, accountId)
         return ResponseEntity.ok(transactions)
-    }
-
-
-    fun deposit(accountNumber: String, request: DepositWithdrawDto): ResponseEntity<String> {
-        val account = accountRepository.findByAccountNumber(accountNumber)
-            ?: throw IllegalArgumentException("Account not found")
-
-        if (account.isFrozen) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Account is frozen")
-        }
-        val transaction = TransactionEntity(
-            senderAccount = null,
-            receiverAccount = account,
-            amount = request.amount,
-            timestamp = LocalDateTime.now(),
-            location = request.location,
-            status = TransactionStatus.SUCCESS,
-            deviceId = request.deviceId,
-            ipAddress = request.ipAddress,
-            isFlagged = false,
-            isDeposit = true,
-            isWithdrawal = false
-        )
-
-        transactionRepository.save(transaction)
-        val apoorved = fraudFlagService.evaluateTransaction(transaction)
-        if (apoorved) {
-            account.balance += request.amount
-            accountRepository.save(account)
-        }
-
-
-
-        return ResponseEntity.ok("Deposit successful")
-    }
-
-    fun withdraw(accountNumber: String, request: DepositWithdrawDto): ResponseEntity<String> {
-        val account = accountRepository.findByAccountNumber(accountNumber)
-            ?: throw IllegalArgumentException("Account not found")
-
-        if (account.isFrozen) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Account is frozen")
-        }
-
-        if (account.balance < request.amount) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Insufficient balance")
-        }
-
-        account.balance -= request.amount
-        accountRepository.save(account)
-
-        val transaction = TransactionEntity(
-            senderAccount = account,
-            receiverAccount = null,
-            amount = request.amount,
-            timestamp = LocalDateTime.now(),
-            location = request.location,
-            status = TransactionStatus.SUCCESS,
-            deviceId = request.deviceId,
-            ipAddress = request.ipAddress,
-            isFlagged = false,
-            isDeposit = false,
-            isWithdrawal = true
-        )
-
-        transactionRepository.save(transaction)
-        val apoorved = fraudFlagService.evaluateTransaction(transaction)
-        if (apoorved) {
-            account.balance -= request.amount
-            accountRepository.save(account)
-        }
-
-        return ResponseEntity.ok("Withdrawal successful")
     }
 
 }
