@@ -33,3 +33,5 @@ replay_pid*
 /.idea/vcs.xml
 /.idea/workspace.xml
 /src/main/resources/application.properties
+
+.DS_Store
