@@ -15,15 +15,11 @@ class AdminService (
     private val accountRepository: AccountRepository,
     ) {
 
-    fun listAllTransactions(request: TransactionFilter
+    fun listFlaggedTransactions(
     ): List<TransactionEntity?> {
-        val transaction = transactionRepository.findBySenderAccountAccountNumberOrReceiverAccountAccountNumber(
-            request.accountId,
-            request.accountId
-        ).filter { it.isFlagged == true}
+        val transactions = transactionRepository.findAll().filter { it.isFlagged }
 
-
-        return transaction
+        return transactions
 
     }
 
@@ -48,6 +44,9 @@ data class AccountData(
         val isFrozen: Boolean,
         val isActive: Boolean,
     )
+
+
+
 data class TransactionFilter(
     val accountId: String,
 )

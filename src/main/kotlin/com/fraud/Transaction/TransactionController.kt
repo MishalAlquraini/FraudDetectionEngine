@@ -1,14 +1,19 @@
 package com.fraud.transaction
 
+import com.fraud.User.UserRepository
+import com.fraud.account.unauthorizedException
 import com.fraud.transaction.TransactionService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.security.Principal
 
 
 @RestController
 @RequestMapping("/transaction")
 class TransactionController(
     private val transactionService: TransactionService,
+    private val userRepository: UserRepository
+
 ) {
 
     @PostMapping
@@ -26,17 +31,19 @@ class TransactionController(
 
 
     @PostMapping("/deposit/{accountNumber}")
-    fun deposit(
+    fun deposit(principal: Principal,
         @PathVariable accountNumber: String,
         @RequestBody request: DepositWithdrawDto
     ): ResponseEntity<String> {
-        return transactionService.deposit(accountNumber, request)
+        val email = principal.name
+        val user = userRepository.findByEmail(email) ?: throw unauthorizedException()
+        return transactionService.deposit(user, accountNumber, request)
     }
 
     @PostMapping("/withdraw/{accountNumber}")
     fun withdraw(
         @PathVariable accountNumber: String,
-        @RequestBody request: DepositWithdrawDto
+        @RequestBody request: WithdrawDto
     ): ResponseEntity<String> {
         return transactionService.withdraw(accountNumber, request)
     }
