@@ -58,7 +58,7 @@ class TransactionService(
 
     fun getTransactionsByAccountNumber(accountNumber: String): ResponseEntity<Any> {
         val transactions = transactionRepository
-            .findBySenderAccountAccountNumberOrReceiverAccountAccountNumber(accountNumber, accountNumber)
+            .findBySenderAccountAccountNumberOrReceiverAccountAccountNumber(accountNumber, accountNumber).reversed()
 
         return ResponseEntity.ok(transactions)
     }
