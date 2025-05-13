@@ -71,8 +71,8 @@ fun checkBalance(user: UserEntity, accountNumber: String): AccountBalance{
                 userId = it.user?.id,
                 accountNumber = it.accountNumber,
                 balance = it.balance,
-                isFrozen = it.isFrozen,
-                isActive = it.isActive,
+//                isFrozen = it.isFrozen,
+//                isActive = it.isActive,
                 createdAt = it.createdAt
             )
         }
@@ -97,8 +97,8 @@ data class Account(
     val userId: Long?,
     val accountNumber: String,
     val balance: BigDecimal,
-    val isFrozen: Boolean,
-    val isActive: Boolean,
+//    val isFrozen: Boolean,
+//    val isActive: Boolean,
     val createdAt: LocalDateTime
 )
 

@@ -58,7 +58,8 @@ class TransactionService(
 
     fun getTransactionsByAccountNumber(accountNumber: String): ResponseEntity<Any> {
         val transactions = transactionRepository
-            .findBySenderAccountAccountNumberOrReceiverAccountAccountNumber(accountNumber, accountNumber)
+            .findBySenderAccountAccountNumberOrReceiverAccountAccountNumber(
+                accountNumber, accountNumber)
 
         return ResponseEntity.ok(transactions)
     }
@@ -90,11 +91,12 @@ class TransactionService(
         if (apoorved) {
             account.balance += request.amount
             accountRepository.save(account)
+            return ResponseEntity.ok("Deposit successful")
+
+        }else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Flagged for admin review")
         }
 
-
-
-        return ResponseEntity.ok("Deposit successful")
     }
 
     fun withdraw(accountNumber: String, request: DepositWithdrawDto): ResponseEntity<String> {
@@ -108,9 +110,6 @@ class TransactionService(
         if (account.balance < request.amount) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Insufficient balance")
         }
-
-        account.balance -= request.amount
-        accountRepository.save(account)
 
         val transaction = TransactionEntity(
             senderAccount = account,

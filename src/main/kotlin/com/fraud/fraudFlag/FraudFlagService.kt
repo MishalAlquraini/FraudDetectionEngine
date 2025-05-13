@@ -41,6 +41,7 @@ class FraudFlagService(
             reasons.add("Amount exceeds threshold")
             severity = SeverityLevel.HIGH
             freeze = true
+            status = TransactionStatus.PENDING
         }
 
         val senderAccountNumber = transaction.senderAccount?.accountNumber
@@ -77,6 +78,7 @@ class FraudFlagService(
             reasons.add("More than 3 transactions in 1 minute")
             severity = SeverityLevel.HIGH
             freeze = true
+            status = TransactionStatus.PENDING
         }
 
         // If anything suspicious, save fraud flag
